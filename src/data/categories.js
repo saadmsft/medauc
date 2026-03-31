@@ -1,0 +1,103 @@
+import {
+  Radiation,
+  Bone,
+  FlaskConical,
+  Sparkles,
+  Eye,
+  Factory,
+  Scissors,
+  HeartPulse,
+  BedDouble,
+  ScanLine,
+  Stethoscope,
+  Wind,
+} from 'lucide-react';
+
+const categories = [
+  {
+    id: 1,
+    name: 'Oncology & Radiotherapy',
+    slug: 'oncology-radiotherapy',
+    icon: Radiation,
+    description: 'Cancer treatment and radiation therapy equipment',
+  },
+  {
+    id: 2,
+    name: 'Bones Joints & Muscles',
+    slug: 'bones-joints-muscles',
+    icon: Bone,
+    description: 'Orthopedic and musculoskeletal equipment',
+  },
+  {
+    id: 3,
+    name: 'Laboratory Blood & Mortuary',
+    slug: 'laboratory-blood-mortuary',
+    icon: FlaskConical,
+    description: 'Lab testing, blood bank, and mortuary equipment',
+  },
+  {
+    id: 4,
+    name: 'Dental & Oral Care',
+    slug: 'dental-oral-care',
+    icon: Stethoscope,
+    description: 'Dental chairs, instruments, and oral care equipment',
+  },
+  {
+    id: 5,
+    name: 'Skin Beauty & Fitness',
+    slug: 'skin-beauty-fitness',
+    icon: Sparkles,
+    description: 'Dermatology, cosmetic, and fitness equipment',
+  },
+  {
+    id: 6,
+    name: 'ENT & Ophthalmology',
+    slug: 'ent-ophthalmology',
+    icon: Eye,
+    description: 'Ear, nose, throat and eye care equipment',
+  },
+  {
+    id: 7,
+    name: 'Medical & Pharma Machinery',
+    slug: 'medical-pharma-machinery',
+    icon: Factory,
+    description: 'Pharmaceutical manufacturing machinery',
+  },
+  {
+    id: 8,
+    name: 'Surgical Tools & Equipment',
+    slug: 'surgical-tools-equipment',
+    icon: Scissors,
+    description: 'Surgical instruments and operation theater equipment',
+  },
+  {
+    id: 9,
+    name: 'ICU CCU Emergency & Trauma',
+    slug: 'icu-ccu-emergency-trauma',
+    icon: HeartPulse,
+    description: 'Intensive care and emergency medical equipment',
+  },
+  {
+    id: 10,
+    name: 'Hospital Furniture',
+    slug: 'hospital-furniture',
+    icon: BedDouble,
+    description: 'Hospital beds, trolleys, and furniture',
+  },
+  {
+    id: 11,
+    name: 'Imaging & Radiology',
+    slug: 'imaging-radiology',
+    icon: ScanLine,
+    description: 'X-Ray, CT, MRI, and ultrasound equipment',
+  },
+  {
+    id: 12,
+    name: 'Gastroenterology & Pulmonology',
+    slug: 'gastroenterology-pulmonology',
+    icon: Wind,
+    description: 'GI and respiratory diagnostic equipment',
+  },
+];
+
+export default categories;
