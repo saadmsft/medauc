@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Phone, Loader2, CheckCircle } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import './InfoPage.css';
 
 function Register() {
@@ -13,20 +14,65 @@ function Register() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const { signUp } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
       return;
     }
-    navigate('/');
+
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    setIsLoading(true);
+
+    const { error } = await signUp(formData.email, formData.password, {
+      full_name: formData.name,
+      phone: formData.phone,
+    });
+
+    if (error) {
+      setError(error.message);
+      setIsLoading(false);
+    } else {
+      setSuccess(true);
+      setIsLoading(false);
+    }
   };
+
+  if (success) {
+    return (
+      <div className="auth-page">
+        <div className="auth-card">
+          <div className="auth-header">
+            <CheckCircle size={48} color="#22c55e" style={{ marginBottom: '16px' }} />
+            <h1>Check Your Email</h1>
+            <p>We've sent a confirmation link to <strong>{formData.email}</strong></p>
+          </div>
+          <p style={{ textAlign: 'center', color: '#666', marginTop: '16px' }}>
+            Click the link in the email to activate your account, then you can log in.
+          </p>
+          <Link to="/login" className="btn-primary auth-submit-btn" style={{ display: 'block', textAlign: 'center', marginTop: '24px', textDecoration: 'none' }}>
+            Go to Login
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-page">
@@ -37,6 +83,12 @@ function Register() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          {error && (
+            <div className="auth-error">
+              {error}
+            </div>
+          )}
+
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <div className="input-with-icon">
@@ -142,8 +194,12 @@ function Register() {
             </span>
           </label>
 
-          <button type="submit" className="btn-primary auth-submit-btn">
-            Create Account
+          <button type="submit" className="btn-primary auth-submit-btn" disabled={isLoading}>
+            {isLoading ? (
+              <><Loader2 size={18} className="spin" /> Creating Account...</>
+            ) : (
+              'Create Account'
+            )}
           </button>
         </form>
 

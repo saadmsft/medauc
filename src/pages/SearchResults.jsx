@@ -1,44 +1,61 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, Loader2 } from 'lucide-react';
 import ProductCard from '../components/ProductCard.jsx';
-import { allProducts } from '../data/products.js';
+import { searchProducts, getProducts } from '../services/productService.js';
 import './InfoPage.css';
 
 function SearchResults() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [sortBy, setSortBy] = useState('relevance');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const results = useMemo(() => {
-    if (!query.trim()) return allProducts;
+  useEffect(() => {
+    async function fetchResults() {
+      setLoading(true);
+      try {
+        let data;
+        if (query.trim()) {
+          data = await searchProducts(query);
+        } else {
+          data = await getProducts({ limit: 50 });
+        }
+        let products = data.products || [];
 
-    const q = query.toLowerCase();
-    let filtered = allProducts.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.status.toLowerCase().includes(q)
-    );
+        // Sort client-side
+        switch (sortBy) {
+          case 'price-asc':
+            products.sort((a, b) => a.price - b.price);
+            break;
+          case 'price-desc':
+            products.sort((a, b) => b.price - a.price);
+            break;
+          case 'name-asc':
+            products.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+          default:
+            break;
+        }
 
-    switch (sortBy) {
-      case 'price-asc':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'name-asc':
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      default:
-        break;
+        setResults(products);
+      } catch (error) {
+        console.error('Error searching:', error);
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
     }
-
-    return filtered;
+    fetchResults();
   }, [query, sortBy]);
+
+  // Map product format
+  const mapProduct = (p) => ({
+    ...p,
+    image: p.image_url,
+    category: p.category_slug,
+  });
 
   return (
     <div className="search-results-page">
@@ -59,7 +76,7 @@ function SearchResults() {
               'All Products'
             )}
           </h1>
-          <p>{results.length} products found</p>
+          <p>{loading ? 'Searching...' : `${results.length} products found`}</p>
         </div>
 
         <div className="search-sort-bar">
@@ -75,10 +92,14 @@ function SearchResults() {
           </select>
         </div>
 
-        {results.length > 0 ? (
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
+            <Loader2 size={40} className="spin" style={{ color: '#F57C20' }} />
+          </div>
+        ) : results.length > 0 ? (
           <div className="search-products-grid">
             {results.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={mapProduct(product)} />
             ))}
           </div>
         ) : (

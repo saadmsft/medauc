@@ -1,17 +1,31 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import './InfoPage.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/');
+    setError('');
+    setIsLoading(true);
+
+    const { error } = await signIn(email, password);
+
+    if (error) {
+      setError(error.message);
+      setIsLoading(false);
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -23,6 +37,12 @@ function Login() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          {error && (
+            <div className="auth-error">
+              {error}
+            </div>
+          )}
+
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
             <div className="input-with-icon">
@@ -69,8 +89,12 @@ function Login() {
             <a href="#" className="forgot-link">Forgot Password?</a>
           </div>
 
-          <button type="submit" className="btn-primary auth-submit-btn">
-            Login
+          <button type="submit" className="btn-primary auth-submit-btn" disabled={isLoading}>
+            {isLoading ? (
+              <><Loader2 size={18} className="spin" /> Signing in...</>
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
 

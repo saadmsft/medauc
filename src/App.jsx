@@ -16,6 +16,9 @@ import Privacy from './pages/Privacy.jsx';
 import RefundPolicy from './pages/RefundPolicy.jsx';
 import HelpCenter from './pages/HelpCenter.jsx';
 import Cart from './pages/Cart.jsx';
+import Checkout from './pages/Checkout.jsx';
+import OrderConfirmation from './pages/OrderConfirmation.jsx';
+import Orders from './pages/Orders.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import SearchResults from './pages/SearchResults.jsx';
@@ -48,6 +51,9 @@ function App() {
           <Route path="/refund" element={<RefundPolicy />} />
           <Route path="/help" element={<HelpCenter />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation/:orderId" element={<OrderConfirmation />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/search" element={<SearchResults />} />

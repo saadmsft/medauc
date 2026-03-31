@@ -93,9 +93,9 @@ function Cart() {
               <span>Total</span>
               <span>{formatPrice(cartTotal)}</span>
             </div>
-            <button className="btn-primary checkout-btn">
+            <Link to="/checkout" className="btn-primary checkout-btn">
               Proceed to Checkout
-            </button>
+            </Link>
             <button className="clear-cart-btn" onClick={clearCart}>
               Clear Cart
             </button>

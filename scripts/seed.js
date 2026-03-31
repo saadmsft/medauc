@@ -1,0 +1,132 @@
+// Seed script to populate Supabase with initial data
+// Run with: node scripts/seed.js
+
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://monmsywpocptcwyemfnw.supabase.co';
+const supabaseKey = 'sb_publishable_i2EvzmZRNq1CIg-NycESgQ_7R9-Pcvp';
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const categories = [
+  { id: 1, name: 'Oncology & Radiotherapy', slug: 'oncology-radiotherapy', icon_name: 'Radiation', description: 'Cancer treatment and radiation therapy equipment' },
+  { id: 2, name: 'Bones Joints & Muscles', slug: 'bones-joints-muscles', icon_name: 'Bone', description: 'Orthopedic and musculoskeletal equipment' },
+  { id: 3, name: 'Laboratory Blood & Mortuary', slug: 'laboratory-blood-mortuary', icon_name: 'FlaskConical', description: 'Lab testing, blood bank, and mortuary equipment' },
+  { id: 4, name: 'Dental & Oral Care', slug: 'dental-oral-care', icon_name: 'Stethoscope', description: 'Dental chairs, instruments, and oral care equipment' },
+  { id: 5, name: 'Skin Beauty & Fitness', slug: 'skin-beauty-fitness', icon_name: 'Sparkles', description: 'Dermatology, cosmetic, and fitness equipment' },
+  { id: 6, name: 'ENT & Ophthalmology', slug: 'ent-ophthalmology', icon_name: 'Eye', description: 'Ear, nose, throat and eye care equipment' },
+  { id: 7, name: 'Medical & Pharma Machinery', slug: 'medical-pharma-machinery', icon_name: 'Factory', description: 'Pharmaceutical manufacturing machinery' },
+  { id: 8, name: 'Surgical Tools & Equipment', slug: 'surgical-tools-equipment', icon_name: 'Scissors', description: 'Surgical instruments and operation theater equipment' },
+  { id: 9, name: 'ICU CCU Emergency & Trauma', slug: 'icu-ccu-emergency-trauma', icon_name: 'HeartPulse', description: 'Intensive care and emergency medical equipment' },
+  { id: 10, name: 'Hospital Furniture', slug: 'hospital-furniture', icon_name: 'BedDouble', description: 'Hospital beds, trolleys, and furniture' },
+  { id: 11, name: 'Imaging & Radiology', slug: 'imaging-radiology', icon_name: 'ScanLine', description: 'X-Ray, CT, MRI, and ultrasound equipment' },
+  { id: 12, name: 'Gastroenterology & Pulmonology', slug: 'gastroenterology-pulmonology', icon_name: 'Wind', description: 'GI and respiratory diagnostic equipment' },
+];
+
+const products = [
+  // New Listings
+  { id: 1, name: 'GE Ultrasound Machine X200', price: 850000, brand: 'GE', status: 'New', stock: 2, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=Ultrasound+X200', description: 'GE Ultrasound Machine X200 with advanced imaging capabilities. Features high-resolution display, multiple probe compatibility, and portable design for clinic and hospital use.', specs: { Display: '15 inch LED', Probes: 'Convex, Linear, Micro-Convex', Weight: '8.5 kg', Power: '100-240V AC', Warranty: '1 Year' } },
+  { id: 2, name: 'Digital X-Ray Machine Portable', price: 1200000, brand: 'Philips', status: 'New', stock: 1, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=X-Ray+Portable', description: 'Portable Digital X-Ray Machine with flat panel detector. High image quality, low radiation dose, and wireless image transfer capability.', specs: { Detector: '14x17 inch Flat Panel', Resolution: '3.5 lp/mm', Generator: '32kW High Frequency', Weight: '120 kg', Warranty: '2 Years' } },
+  { id: 3, name: 'Patient Monitor 5 Parameter', price: 120000, brand: 'Mindray', status: 'New', stock: 5, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=Patient+Monitor', description: 'Multi-parameter patient monitor with ECG, SpO2, NIBP, Temperature, and Respiration monitoring. Compact design suitable for bedside and transport use.', specs: { Parameters: 'ECG, SpO2, NIBP, Temp, Resp', Display: '12.1 inch TFT', Battery: '4 hours backup', Alarms: 'Visual and Audible', Warranty: '1 Year' } },
+  { id: 4, name: 'Color Doppler Ultrasound Machine', price: 650000, brand: 'Samsung', status: 'Used', stock: 1, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=Color+Doppler', description: 'Samsung Color Doppler Ultrasound Machine with 4D imaging capability. Excellent for cardiac, OB/GYN, and vascular applications.', specs: { Display: '19 inch LED', Modes: 'B, M, Color, PW, CW', Probes: '4 Active Ports', Storage: '500GB HDD', Warranty: '6 Months' } },
+  
+  // Medical Consumables
+  { id: 5, name: 'ECG Papers Roll Pack of 10', price: 3500, brand: 'Generic', status: 'New', stock: 100, moq: 5, category_slug: 'surgical-tools-equipment', image_url: 'https://placehold.co/300x200/eee/999?text=ECG+Papers', description: 'High quality thermal ECG recording paper rolls. Compatible with most ECG machines. Pack of 10 rolls.', specs: { Size: '50mm x 30m', Type: 'Thermal', Compatibility: 'Universal', Pack: '10 Rolls', 'Shelf Life': '2 Years' } },
+  { id: 6, name: 'Ultrasound Gel 5L Bottle', price: 2000, brand: 'Generic', status: 'New', stock: 50, moq: 2, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=Ultrasound+Gel', description: 'Medical grade ultrasound transmission gel. Non-staining, hypoallergenic, and water soluble. 5 liter economy bottle.', specs: { Volume: '5 Liters', Type: 'Water Based', Color: 'Clear Blue', pH: 'Neutral', 'Shelf Life': '3 Years' } },
+  { id: 7, name: 'X-Ray Films Fuji 14x17', price: 25000, brand: 'Fuji', status: 'New', stock: 20, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=X-Ray+Films', description: 'Fuji medical X-Ray films 14x17 inch size. High contrast, fine grain structure for excellent diagnostic quality. Box of 100 sheets.', specs: { Size: '14 x 17 inches', Sheets: '100 per box', Type: 'Blue Base', Speed: 'Regular', Storage: 'Cool & Dry' } },
+  { id: 8, name: 'CT Scan Contrast Injection Pack', price: 4800, brand: 'GE', status: 'New', stock: 30, moq: 5, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=CT+Contrast', description: 'CT Scan contrast media injection pack. Iodine-based contrast agent for enhanced CT imaging. Single use sterile pack.', specs: { Volume: '100ml', Concentration: '350mg I/ml', Type: 'Non-ionic', Sterility: 'Single Use', Storage: 'Room Temperature' } },
+  
+  // Diagnostic Equipment
+  { id: 9, name: 'CT Scan Machine 16 Slice Toshiba', price: 8500000, brand: 'Toshiba', status: 'Used', stock: 1, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=CT+Scan+16', description: 'Toshiba Aquilion 16 Slice CT Scanner. Fully refurbished with new X-ray tube. Ideal for hospitals and diagnostic centers.', specs: { Slices: '16', 'Rotation Speed': '0.5s', 'Gantry Aperture': '72cm', 'kV Range': '80-135 kV', Warranty: '1 Year' } },
+  { id: 10, name: 'MRI Machine 1.5 Tesla Siemens', price: 25000000, brand: 'Siemens', status: 'Used', stock: 1, moq: 1, category_slug: 'imaging-radiology', image_url: 'https://placehold.co/300x200/eee/999?text=MRI+1.5T', description: 'Siemens Magnetom Essenza 1.5T MRI Machine. Complete system with gradient coils, RF coils, and patient table. Fully operational.', specs: { 'Field Strength': '1.5 Tesla', 'Bore Size': '60cm', Gradient: '33 mT/m', Coils: 'Head, Spine, Body, Knee', Warranty: '1 Year' } },
+  { id: 11, name: 'Endoscopy System Complete Set', price: 950000, brand: 'Olympus', status: 'New', stock: 2, moq: 1, category_slug: 'gastroenterology-pulmonology', image_url: 'https://placehold.co/300x200/eee/999?text=Endoscopy+Set', description: 'Complete Olympus Endoscopy System including processor, light source, monitor, and gastroscope. Ready for GI diagnostics.', specs: { Processor: 'CV-170', 'Light Source': 'CLV-170', Monitor: '19 inch HD', Scope: 'GIF-H170', Warranty: '1 Year' } },
+  { id: 12, name: 'Digital ECG Machine 6 Channel', price: 400000, brand: 'GE', status: 'New', stock: 3, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=ECG+6CH', description: 'GE MAC 600 6-Channel Digital ECG Machine with interpretation. Auto measurement and analysis with thermal printer.', specs: { Channels: '6', Display: '5.7 inch LCD', Leads: '12 Lead Standard', Printer: 'Thermal', Battery: '3 hours' } },
+  
+  // Lab Equipment
+  { id: 13, name: 'Hematology Analyzer 3 Part', price: 180000, brand: 'Mindray', status: 'New', stock: 4, moq: 1, category_slug: 'laboratory-blood-mortuary', image_url: 'https://placehold.co/300x200/eee/999?text=Hematology+3P', description: 'Mindray BC-20 3-Part Hematology Analyzer. Provides CBC with 3-part differential. High throughput of 60 samples per hour.', specs: { Parameters: '20', Throughput: '60 samples/hr', 'Sample Volume': '13 uL', Display: '8 inch LCD', Warranty: '1 Year' } },
+  { id: 14, name: 'Biochemistry Analyzer Fully Auto', price: 350000, brand: 'Roche', status: 'New', stock: 2, moq: 1, category_slug: 'laboratory-blood-mortuary', image_url: 'https://placehold.co/300x200/eee/999?text=Biochemistry+Auto', description: 'Fully automated random access biochemistry analyzer. 200 tests per hour with ISE module for electrolytes.', specs: { Throughput: '200 tests/hr', 'Reagent Positions': '60', 'Sample Positions': '90', Methods: 'Photometry, ISE', Warranty: '1 Year' } },
+  { id: 15, name: 'Urine Analyzer Machine', price: 90000, brand: 'Roche', status: 'New', stock: 6, moq: 1, category_slug: 'laboratory-blood-mortuary', image_url: 'https://placehold.co/300x200/eee/999?text=Urine+Analyzer', description: 'Automated urine analyzer with strip reader. Tests for glucose, protein, pH, blood, and 7 other parameters.', specs: { Parameters: '11', Throughput: '120 strips/hr', Method: 'Reflectance Photometry', Printer: 'Built-in Thermal', Warranty: '1 Year' } },
+  { id: 16, name: 'Electrolyte Analyzer Machine', price: 220000, brand: 'Roche', status: 'Used', stock: 2, moq: 1, category_slug: 'laboratory-blood-mortuary', image_url: 'https://placehold.co/300x200/eee/999?text=Electrolyte+Analyzer', description: 'ISE Electrolyte Analyzer for Na, K, Cl, Ca, Li measurement. Fast results in 60 seconds with minimal sample volume.', specs: { Parameters: 'Na, K, Cl, Ca, Li', Method: 'Ion Selective Electrode', 'Result Time': '60 seconds', 'Sample Volume': '95 uL', Warranty: '6 Months' } },
+  
+  // Monitoring Equipment
+  { id: 17, name: 'Digital Blood Pressure Monitor', price: 4500, brand: 'Omron', status: 'New', stock: 50, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=BP+Monitor', description: 'Omron Digital Blood Pressure Monitor with large display. Clinically validated with irregular heartbeat detection.', specs: { Method: 'Oscillometric', Range: '0-299 mmHg', Memory: '60 Readings', 'Cuff Size': '22-42 cm', Power: '4x AA Batteries' } },
+  { id: 18, name: 'Fetal Doppler Handheld', price: 7000, brand: 'Generic', status: 'New', stock: 20, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=Fetal+Doppler', description: 'Handheld Fetal Doppler for monitoring fetal heart rate. LCD display with speaker. Easy to use for clinics and home.', specs: { Frequency: '2 MHz', 'FHR Range': '50-240 BPM', Display: 'LCD', Power: '2x AA Battery', Weight: '180g' } },
+  { id: 19, name: 'Multipara Cardiac Monitor', price: 150000, brand: 'Philips', status: 'New', stock: 3, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=Cardiac+Monitor', description: 'Multi-parameter cardiac monitor with 12-lead ECG, SpO2, NIBP, IBP, EtCO2, and temperature monitoring. For ICU and CCU use.', specs: { Parameters: 'ECG, SpO2, NIBP, IBP, EtCO2, Temp', Display: '15 inch TFT', Battery: '6 hours', Network: 'WiFi, LAN', Warranty: '2 Years' } },
+  { id: 20, name: 'Pulse Oximeter Fingertip', price: 12000, brand: 'Mindray', status: 'New', stock: 100, moq: 1, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=Pulse+Oximeter', description: 'Professional fingertip pulse oximeter with OLED display. Measures SpO2 and pulse rate with perfusion index.', specs: { 'SpO2 Range': '0-100%', 'PR Range': '25-250 BPM', Display: 'OLED', Battery: '2x AAA', Weight: '50g' } },
+  
+  // Surgical Equipment
+  { id: 21, name: 'LED Operation Theater Light', price: 220000, brand: 'Generic', status: 'New', stock: 5, moq: 1, category_slug: 'surgical-tools-equipment', image_url: 'https://placehold.co/300x200/eee/999?text=OT+Light+LED', description: 'Double dome LED operation theater light with ceiling mount. Shadow-free illumination with adjustable color temperature.', specs: { Illuminance: '160,000 Lux', 'Color Temp': '3500-5000K', CRI: '>95', Dome: 'Double', Warranty: '2 Years' } },
+  { id: 22, name: 'Electrosurgical Diathermy Unit', price: 95000, brand: 'Generic', status: 'New', stock: 8, moq: 1, category_slug: 'surgical-tools-equipment', image_url: 'https://placehold.co/300x200/eee/999?text=Diathermy+Unit', description: 'Digital electrosurgical unit with mono and bipolar modes. Suitable for general surgery, ENT, and gynecology procedures.', specs: { Power: '400W Mono, 80W Bipolar', Modes: 'Cut, Coag, Blend, Bipolar', Frequency: '500 kHz', Display: 'Digital LED', Warranty: '1 Year' } },
+  { id: 23, name: 'Laparoscopy Complete Set', price: 1500000, brand: 'Karl Storz', status: 'New', stock: 1, moq: 1, category_slug: 'surgical-tools-equipment', image_url: 'https://placehold.co/300x200/eee/999?text=Laparoscopy+Set', description: 'Complete laparoscopy set including camera, light source, insufflator, monitor, and instrument set. Ready for minimally invasive surgery.', specs: { Camera: 'Full HD 1080p', 'Light Source': 'LED', Insufflator: '30L/min', Monitor: '26 inch Full HD', Warranty: '1 Year' } },
+  { id: 24, name: 'Surgical Laser Machine CO2', price: 300000, brand: 'Generic', status: 'Used', stock: 1, moq: 1, category_slug: 'surgical-tools-equipment', image_url: 'https://placehold.co/300x200/eee/999?text=CO2+Laser', description: 'CO2 Surgical Laser Machine for cutting and ablation. Used in dermatology, ENT, and gynecology procedures.', specs: { Power: '30W', Wavelength: '10.6 um', Mode: 'CW, Pulse, Super Pulse', 'Spot Size': '0.2-2mm', Warranty: '6 Months' } },
+  
+  // Homecare Products
+  { id: 25, name: 'Electric Wheelchair Foldable', price: 180000, brand: 'Generic', status: 'New', stock: 3, moq: 1, category_slug: 'hospital-furniture', image_url: 'https://placehold.co/300x200/eee/999?text=Wheelchair+Electric', description: 'Foldable electric wheelchair with lithium battery. Lightweight aluminum frame, joystick control, and 20km range.', specs: { 'Weight Capacity': '120 kg', Battery: '24V Lithium', Range: '20 km', Weight: '23 kg', Warranty: '1 Year' } },
+  { id: 26, name: 'Infrared Thermometer Gun', price: 2500, brand: 'Generic', status: 'New', stock: 200, moq: 5, category_slug: 'icu-ccu-emergency-trauma', image_url: 'https://placehold.co/300x200/eee/999?text=IR+Thermometer', description: 'Non-contact infrared thermometer gun. Instant reading with fever alarm. Suitable for forehead and object temperature.', specs: { Range: '32-42.9 C', Accuracy: '+/- 0.2 C', Distance: '1-5 cm', Memory: '32 Readings', Power: '2x AAA Battery' } },
+  { id: 27, name: 'Nebulizer Machine Portable', price: 5000, brand: 'Omron', status: 'New', stock: 30, moq: 1, category_slug: 'gastroenterology-pulmonology', image_url: 'https://placehold.co/300x200/eee/999?text=Nebulizer', description: 'Portable compressor nebulizer for home use. Quiet operation with adjustable nebulization rate. Complete with mask and tubing.', specs: { Type: 'Compressor', 'Nebulization Rate': '0.3 ml/min', Capacity: '8 ml', Noise: '<55 dB', Warranty: '1 Year' } },
+  { id: 28, name: 'TENS Pain Relief Machine', price: 8500, brand: 'Omron', status: 'New', stock: 25, moq: 1, category_slug: 'bones-joints-muscles', image_url: 'https://placehold.co/300x200/eee/999?text=TENS+Machine', description: 'TENS (Transcutaneous Electrical Nerve Stimulation) machine for pain relief. Multiple programs for different body areas.', specs: { Channels: '2', Programs: '15 Pre-set', Intensity: '0-80 mA', Timer: '10-60 min', Power: 'Rechargeable' } },
+  
+  // Additional Products - Oncology
+  { id: 29, name: 'Linear Accelerator Varian', price: 45000000, brand: 'Varian', status: 'Used', stock: 1, moq: 1, category_slug: 'oncology-radiotherapy', image_url: 'https://placehold.co/300x200/eee/999?text=Linear+Accelerator', description: 'Varian Clinac Linear Accelerator for radiation therapy. Fully refurbished with new multileaf collimator.', specs: { Energy: '6-18 MV Photon', MLC: '120 Leaves', 'Dose Rate': 'Up to 600 MU/min', Warranty: '1 Year' } },
+  { id: 30, name: 'Cobalt-60 Therapy Unit', price: 12000000, brand: 'GE', status: 'Used', stock: 1, moq: 1, category_slug: 'oncology-radiotherapy', image_url: 'https://placehold.co/300x200/eee/999?text=Cobalt+60+Unit', description: 'Cobalt-60 teletherapy machine for cancer treatment. Source replaced recently with full shielding.', specs: { Source: 'Co-60', Activity: '5000 Ci', 'Field Size': '5x5 to 35x35 cm', Warranty: '6 Months' } },
+  { id: 31, name: 'Radiation Treatment Planning System', price: 8000000, brand: 'Philips', status: 'New', stock: 2, moq: 1, category_slug: 'oncology-radiotherapy', image_url: 'https://placehold.co/300x200/eee/999?text=Treatment+Planning', description: 'Advanced radiation treatment planning system with 3D conformal and IMRT capabilities.', specs: { Type: '3D CRT, IMRT, VMAT', Platform: 'Windows Workstation', License: 'Perpetual', Warranty: '2 Years' } },
+  { id: 32, name: 'Brachytherapy After-Loader', price: 15000000, brand: 'Varian', status: 'New', stock: 1, moq: 1, category_slug: 'oncology-radiotherapy', image_url: 'https://placehold.co/300x200/eee/999?text=Brachytherapy', description: 'HDR brachytherapy after-loading system for internal radiation therapy. Complete with applicators.', specs: { Source: 'Ir-192', Channels: '18', 'Step Size': '2.5mm', Warranty: '1 Year' } },
+  
+  // Dental
+  { id: 33, name: 'Dental Chair Unit Complete', price: 450000, brand: 'Generic', status: 'New', stock: 5, moq: 1, category_slug: 'dental-oral-care', image_url: 'https://placehold.co/300x200/eee/999?text=Dental+Chair', description: 'Complete dental chair unit with LED operating light, handpiece connections, and suction system.', specs: { Light: 'LED Sensor', Handpieces: '3 Connections', Suction: 'High & Low', Warranty: '2 Years' } },
+  { id: 34, name: 'Dental X-Ray Unit Portable', price: 180000, brand: 'Generic', status: 'New', stock: 8, moq: 1, category_slug: 'dental-oral-care', image_url: 'https://placehold.co/300x200/eee/999?text=Dental+X-Ray', description: 'Portable dental X-ray machine with digital sensor. Handheld design for easy intraoral imaging.', specs: { Voltage: '60 kV', Current: '2 mA', Sensor: 'Digital CMOS', Weight: '1.8 kg' } },
+  { id: 35, name: 'Dental Autoclave 23L', price: 95000, brand: 'Generic', status: 'New', stock: 10, moq: 1, category_slug: 'dental-oral-care', image_url: 'https://placehold.co/300x200/eee/999?text=Dental+Autoclave', description: 'Class B dental autoclave sterilizer 23 liters. Pre-vacuum cycle for wrapped and unwrapped instruments.', specs: { Capacity: '23 Liters', Class: 'B', Temp: '134°C', Cycle: '18 min', Warranty: '1 Year' } },
+  { id: 36, name: 'Ultrasonic Dental Scaler', price: 35000, brand: 'Generic', status: 'New', stock: 15, moq: 1, category_slug: 'dental-oral-care', image_url: 'https://placehold.co/300x200/eee/999?text=Dental+Scaler', description: 'Piezoelectric ultrasonic dental scaler for professional cleaning. Multiple tips included.', specs: { Frequency: '28-32 kHz', Tips: '5 Included', Power: 'Adjustable', Water: 'Auto Irrigation' } },
+  
+  // Skin Beauty & Fitness
+  { id: 37, name: 'IPL Laser Hair Removal Machine', price: 650000, brand: 'Generic', status: 'New', stock: 3, moq: 1, category_slug: 'skin-beauty-fitness', image_url: 'https://placehold.co/300x200/eee/999?text=IPL+Laser', description: 'Professional IPL laser machine for permanent hair removal and skin rejuvenation. Multi-wavelength system.', specs: { Wavelength: '480-1200nm', 'Spot Size': '15x50mm', Energy: '50 J/cm²', Cooling: 'Sapphire Contact' } },
+  { id: 38, name: 'Dermatoscope Digital', price: 85000, brand: 'Generic', status: 'New', stock: 10, moq: 1, category_slug: 'skin-beauty-fitness', image_url: 'https://placehold.co/300x200/eee/999?text=Dermatoscope', description: 'Digital dermatoscope with polarized and non-polarized modes. High magnification for skin lesion analysis.', specs: { Magnification: '10x-200x', Camera: '5 MP', Light: 'LED Polarized', Connection: 'USB/WiFi' } },
+  { id: 39, name: 'Hydrafacial Machine Professional', price: 280000, brand: 'Generic', status: 'New', stock: 4, moq: 1, category_slug: 'skin-beauty-fitness', image_url: 'https://placehold.co/300x200/eee/999?text=Hydrafacial', description: 'Professional hydrafacial machine with microdermabrasion, deep cleansing, and serum infusion functions.', specs: { Functions: '6-in-1', Tips: 'Multiple Sizes', Display: '10 inch Touch', Warranty: '1 Year' } },
+  { id: 40, name: 'Body Composition Analyzer', price: 320000, brand: 'Generic', status: 'New', stock: 3, moq: 1, category_slug: 'skin-beauty-fitness', image_url: 'https://placehold.co/300x200/eee/999?text=Body+Analyzer', description: 'Professional body composition analyzer using bioelectrical impedance. Measures fat, muscle, water, and BMI.', specs: { Method: 'BIA Multi-Frequency', Parameters: '20+', Printer: 'Built-in Thermal', Print: 'Auto Report' } },
+  
+  // ENT & Ophthalmology
+  { id: 41, name: 'Slit Lamp Biomicroscope', price: 350000, brand: 'Generic', status: 'New', stock: 4, moq: 1, category_slug: 'ent-ophthalmology', image_url: 'https://placehold.co/300x200/eee/999?text=Slit+Lamp', description: 'Ophthalmic slit lamp biomicroscope with 5 magnifications. LED illumination for comprehensive eye examination.', specs: { Magnification: '6x-40x', 'Slit Width': '0-14mm', Light: 'LED', Eyepiece: '12.5x Wide Field' } },
+  { id: 42, name: 'Auto Refractometer Keratometer', price: 550000, brand: 'Generic', status: 'New', stock: 3, moq: 1, category_slug: 'ent-ophthalmology', image_url: 'https://placehold.co/300x200/eee/999?text=Refractometer', description: 'Automatic refractometer with keratometer for measuring refractive errors and corneal curvature.', specs: { 'SPH Range': '-30 to +25D', 'CYL Range': '0 to ±12D', Measurement: 'Auto Tracking', Printer: 'Built-in' } },
+  { id: 43, name: 'ENT Treatment Unit', price: 420000, brand: 'Generic', status: 'New', stock: 3, moq: 1, category_slug: 'ent-ophthalmology', image_url: 'https://placehold.co/300x200/eee/999?text=ENT+Unit', description: 'Complete ENT treatment unit with patient chair, suction, spray, and diagnostic instruments.', specs: { Components: 'Chair, Suction, Spray', Instruments: 'Otoscope, Laryngoscope', Light: 'LED Headlight', Warranty: '1 Year' } },
+  { id: 44, name: 'Audiometer Diagnostic', price: 280000, brand: 'Generic', status: 'New', stock: 5, moq: 1, category_slug: 'ent-ophthalmology', image_url: 'https://placehold.co/300x200/eee/999?text=Audiometer', description: 'Two-channel diagnostic audiometer for comprehensive hearing assessment. Air, bone, and speech testing.', specs: { Channels: '2', Frequency: '125-8000 Hz', 'Intensity Range': '-10 to 120 dB HL', Tests: 'Air, Bone, Speech' } },
+  
+  // Hospital Furniture
+  { id: 45, name: 'Hospital Bed Electric 3 Function', price: 85000, brand: 'Generic', status: 'New', stock: 10, moq: 1, category_slug: 'hospital-furniture', image_url: 'https://placehold.co/300x200/eee/999?text=Hospital+Bed', description: 'Electric hospital bed with 3 motor functions. Height, back, and leg adjustment with side rails.', specs: { Functions: '3 (Height, Back, Leg)', Mattress: '4 Section', Rails: 'Collapsible', Weight: '180 kg', Warranty: '2 Years' } },
+  { id: 46, name: 'Patient Stretcher Trolley', price: 45000, brand: 'Generic', status: 'New', stock: 15, moq: 1, category_slug: 'hospital-furniture', image_url: 'https://placehold.co/300x200/eee/999?text=Stretcher', description: 'Hydraulic patient stretcher trolley with adjustable height. X-ray translucent top with side rails.', specs: { Height: 'Hydraulic Adjustable', Top: 'X-Ray Translucent', Rails: 'Fold Down', Wheels: '6 inch Castors' } },
+  { id: 47, name: 'ICU Bed Full Electric', price: 180000, brand: 'Generic', status: 'New', stock: 5, moq: 1, category_slug: 'hospital-furniture', image_url: 'https://placehold.co/300x200/eee/999?text=ICU+Bed', description: 'Full electric ICU bed with CPR function, Trendelenburg, and weighing system. For intensive care units.', specs: { Functions: '5 Motor', CPR: 'Quick Release', Trendelenburg: '±15°', Scale: 'Built-in', Warranty: '2 Years' } },
+  { id: 48, name: 'Medicine Trolley Stainless Steel', price: 28000, brand: 'Generic', status: 'New', stock: 20, moq: 1, category_slug: 'hospital-furniture', image_url: 'https://placehold.co/300x200/eee/999?text=Medicine+Trolley', description: 'Stainless steel medicine distribution trolley with multiple drawers and lockable top.', specs: { Material: 'SS 304', Drawers: '6', Top: 'Lockable', Wheels: '4 inch Silent', Size: '60x40x90 cm' } },
+];
+
+async function seed() {
+  console.log('Starting database seed...\n');
+
+  // Insert categories
+  console.log('Inserting categories...');
+  const { data: catData, error: catError } = await supabase
+    .from('categories')
+    .upsert(categories, { onConflict: 'slug' })
+    .select();
+
+  if (catError) {
+    console.error('Error inserting categories:', catError.message);
+    return;
+  }
+  console.log(`✓ Inserted ${catData.length} categories\n`);
+
+  // Insert products
+  console.log('Inserting products...');
+  const { data: prodData, error: prodError } = await supabase
+    .from('products')
+    .upsert(products, { onConflict: 'id' })
+    .select();
+
+  if (prodError) {
+    console.error('Error inserting products:', prodError.message);
+    return;
+  }
+  console.log(`✓ Inserted ${prodData.length} products\n`);
+
+  console.log('Database seeding complete!');
+}
+
+seed();

@@ -1,10 +1,20 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Filter, Grid, List, ChevronRight } from 'lucide-react';
+import { Filter, ChevronRight, Loader2 } from 'lucide-react';
 import ProductCard from '../components/ProductCard.jsx';
-import { allProducts } from '../data/products.js';
-import categories from '../data/categories.js';
+import { getProducts, getCategories, getCategoryBySlug } from '../services/productService.js';
 import './CategoryPage.css';
+
+// Icon imports for categories
+import {
+  Radiation, Bone, FlaskConical, Sparkles, Eye, Factory,
+  Scissors, HeartPulse, BedDouble, ScanLine, Stethoscope, Wind,
+} from 'lucide-react';
+
+const iconMap = {
+  Radiation, Bone, FlaskConical, Sparkles, Eye, Factory,
+  Scissors, HeartPulse, BedDouble, ScanLine, Stethoscope, Wind,
+};
 
 const statusOptions = ['All', 'New', 'Used'];
 const sortOptions = [
@@ -16,40 +26,49 @@ const sortOptions = [
 
 function CategoryPage() {
   const { slug } = useParams();
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
   const [priceRange, setPriceRange] = useState([0, 30000000]);
   const [showFilters, setShowFilters] = useState(false);
 
-  const category = categories.find((c) => c.slug === slug);
-
-  const filteredProducts = useMemo(() => {
-    let filtered = allProducts.filter((p) => p.category === slug);
-
-    if (statusFilter !== 'All') {
-      filtered = filtered.filter((p) => p.status === statusFilter);
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      try {
+        const [prods, cats, cat] = await Promise.all([
+          getProducts({
+            category: slug,
+            status: statusFilter !== 'All' ? statusFilter : null,
+            minPrice: priceRange[0] > 0 ? priceRange[0] : null,
+            maxPrice: priceRange[1] < 30000000 ? priceRange[1] : null,
+            sortBy: sortBy === 'price-asc' ? 'price' : sortBy === 'price-desc' ? 'price' : sortBy === 'name-asc' ? 'name' : 'created_at',
+            sortOrder: sortBy === 'price-asc' || sortBy === 'name-asc' ? 'asc' : 'desc',
+          }),
+          getCategories(),
+          getCategoryBySlug(slug),
+        ]);
+        setProducts(prods.products);
+        setCategories(cats.map(c => ({ ...c, icon: iconMap[c.icon_name] || Stethoscope })));
+        setCategory(cat);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-
-    filtered = filtered.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
-
-    switch (sortBy) {
-      case 'price-asc':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'name-asc':
-        filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      default:
-        break;
-    }
-
-    return filtered;
+    fetchData();
   }, [slug, statusFilter, sortBy, priceRange]);
+
+  // Map product format
+  const mapProduct = (p) => ({
+    ...p,
+    image: p.image_url,
+    category: p.category_slug,
+  });
 
   return (
     <div className="category-page">
@@ -63,7 +82,9 @@ function CategoryPage() {
 
         <div className="category-header">
           <h1>{category?.name || 'Products'}</h1>
-          <p className="category-count">{filteredProducts.length} products found</p>
+          <p className="category-count">
+            {loading ? 'Loading...' : `${products.length} products found`}
+          </p>
         </div>
 
         <div className="category-layout">
@@ -156,10 +177,14 @@ function CategoryPage() {
               </select>
             </div>
 
-            {filteredProducts.length > 0 ? (
+            {loading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '60px' }}>
+                <Loader2 size={40} className="spin" style={{ color: '#F57C20' }} />
+              </div>
+            ) : products.length > 0 ? (
               <div className="products-grid">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={mapProduct(product)} />
                 ))}
               </div>
             ) : (

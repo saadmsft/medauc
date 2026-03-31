@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -12,20 +12,61 @@ import {
   Package,
   Minus,
   Plus,
+  Loader2,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext.jsx';
-import { allProducts } from '../data/products.js';
+import { getProductById, getProductsByCategory, mapProduct } from '../services/productService.js';
 import ProductSection from '../components/ProductSection.jsx';
 import './ProductDetail.css';
 
 function ProductDetail() {
   const { id } = useParams();
-  const product = allProducts.find((p) => p.id === Number(id));
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
+  const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(product?.moq || 1);
+  const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [addedToCart, setAddedToCart] = useState(false);
+
+  useEffect(() => {
+    async function fetchProduct() {
+      setLoading(true);
+      try {
+        const data = await getProductById(Number(id));
+        if (data) {
+          const mapped = mapProduct(data);
+          setProduct(mapped);
+          setQuantity(mapped.moq || 1);
+          
+          // Fetch related products
+          const related = await getProductsByCategory(data.category_slug);
+          setRelatedProducts(
+            related
+              .filter((p) => p.id !== data.id)
+              .slice(0, 4)
+              .map(mapProduct)
+          );
+        }
+      } catch (err) {
+        console.error('Error fetching product:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="product-detail">
+        <div className="container" style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
+          <Loader2 size={48} className="spin" style={{ color: '#F57C20' }} />
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -44,10 +85,6 @@ function ProductDetail() {
   }
 
   const wishlisted = isInWishlist(product.id);
-
-  const relatedProducts = allProducts
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
